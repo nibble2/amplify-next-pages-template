@@ -16,15 +16,21 @@ export default function App() {
   const sendPrompt = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { data, errors } = await client.queries.generateHaiku({
-      prompt
-    });
+    try {
+      const { data, errors } = await client.queries.generateHaiku({
+        prompt
+      });
 
-    if (!errors) {
-      setAnswer(data);
-      setPrompt('');
-    } else {
-      console.log(errors);
+      if (!errors) {
+        setAnswer(data);
+        setPrompt('');
+      } else {
+        console.log(errors);
+        setAnswer('에러가 발생했습니다: ' + JSON.stringify(errors));
+      }
+    } catch (error) {
+      console.error(error);
+      setAnswer('백엔드가 배포되지 않았습니다.');
     }
   };
 
